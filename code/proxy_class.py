@@ -1,4 +1,4 @@
-
+"""
 from scapy.all import *
 from scapy.layers.inet import IP
 from scapy.layers.inet import TCP
@@ -7,7 +7,7 @@ from concurrent.futures import ThreadPoolExecutor
 import requests
 import time
 import os
-
+"""
 
 
 class Proxy:
@@ -37,7 +37,7 @@ class Proxy:
     self.request_rate = 0
     self.handshake_rate = 0
 
-    print(f"Initiated Proxy: \nIP: {self.ip}   , Port:  {self.port},  Protokoll:  {self.protocol}, ")
+    print(f"Initiated Proxy: \n\n  Protokoll:  {self.protocol}IP: {self.ip}   , Port:  {self.port}, Country: {self.country} \n")
 
   "Getter and Setter for Proxy"
   def get_avg_transmission_time(self):

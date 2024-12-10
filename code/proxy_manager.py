@@ -1,9 +1,10 @@
-from scapy.all import *
+
+#from scapy.all import *
 import asyncio
-from proxybroker import Broker, Proxy # type: ignore
-from proxy_class import *
-from proxy_manager import *
-from main import *
+#from proxybroker import Broker, Proxy # type: ignore
+from proxy_class import Proxy
+#from proxy_manager import Proxy
+#from main import *
 
 
 class Proxy_Manager:
@@ -104,7 +105,7 @@ class Proxy_Manager:
     attrs = vars(Proxy)
     print(f"\nAdded to List:\n" + ', \n'.join("%s: %s" % item for item in attrs.items()) + "\n")
   
-  async def print_proxy_list(self, arg):
+  def print_proxy_list(self, arg): #TODO ADD async keyword AGAIN!!
     """
     Method to print the actual proxy_list with enhanced ASCII art representation designed by ChatGPT
     """

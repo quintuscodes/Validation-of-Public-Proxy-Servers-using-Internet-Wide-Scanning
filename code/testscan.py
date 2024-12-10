@@ -32,3 +32,6 @@ def write_proxy_to_class(proxies,proxy_list):
       proxy_list.append(p)
 
 write_proxy_to_class(proxies,proxy_list)
+
+for proxy in proxy_list:
+   print(proxy.get_object())

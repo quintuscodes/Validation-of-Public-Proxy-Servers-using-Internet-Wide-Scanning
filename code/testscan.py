@@ -6,8 +6,8 @@ from proxy_class import Proxy
 proxies = {
         "HTTP" : ["202.61.206.250", 8888, "Australia"],
         "SOCKS4": ["212.83.143.191", 12898, "France"],
-        "SOCKS5" : ["212.83.143.118",46786, "France"],
-        "CONNECT25": ["212.83.143.118",46786,"Japan"],
+        "SOCKS5" : ["212.83.143.191",12898, "France"],
+        "CONNECT25": ["160.86.242.23",8080,"Japan"],
         "http_false_80": [ "XXX.XX.XXX.XXX", 80, "ufer_hama"],
         "socks_false_1080" : [ "XXX.XX.XXX.XXX", 1080,"ufer_hama"],
         "HTTP_false" : ["202.61.206.250", 80,"Australia"]

@@ -40,13 +40,14 @@ async def main(proxy_number: int,evaluation_rounds:int, protocols: set):
     
 
     """
-    fetch_tasks = [] 
+    #fetch_tasks = [] 
     evaluate_tasks = [] 
     proxy_managers_list = []
     
 
     "Filter by selected protocol and init the tasks"
     counter = 0
+    """
     if "HTTP" in protocols:
         http = Proxy_Manager("HTTP") # type: ignore
         proxy_managers_list.append(http)
@@ -70,43 +71,44 @@ async def main(proxy_number: int,evaluation_rounds:int, protocols: set):
         proxy_managers_list.append(connect25)
         fetch_tasks.append(connect25.fetch_proxys_write_to_class(proxy_number,evaluation_rounds))
         evaluate_tasks.append(connect25.evaluate_proxy_list(counter, evaluation_rounds,proxy_number))
-
-    num_proto = len(fetch_tasks)
+    """
+    num_proto = len(proxy_managers_list)
     
     
     "Using Asyncio to concurrently find Proxy Objects using Proxybroker2 and evaluate them using the proxy_class methods "
     
-    await asyncio.gather(*fetch_tasks)
+    #await asyncio.gather(*fetch_tasks)
     
     await asyncio.gather(*evaluate_tasks)
     
-    await sort_proxy_managers(proxy_managers_list,proxy_number) #Sort, Remove not reliable Proxys
+    #await sort_proxy_managers(proxy_managers_list,proxy_number) #Sort, Remove not reliable Proxys
     "Recursive Re-Evaluate List: Dynamic Approach"
+    """
     global stop_counter
     stop_counter = 1
     for manager in proxy_managers_list:
             
             manager.add_epoch_data(epoch_number=stop_counter)
         
-    
+    """
 
-    await rec_wait_and_evaluate_again(proxy_managers_list,counter,evaluation_rounds,proxy_number,num_proto, stop_counter)
+    #await rec_wait_and_evaluate_again(proxy_managers_list,counter,evaluation_rounds,proxy_number,num_proto, stop_counter)
 
     "Plotting"
-    plot_avg_score_distribution(proxy_managers_list)
-    plot_top_proxies_by_protocol(proxy_managers_list)
-    plot_avg_syn_ack_time(socks5)
-    plot_avg_throughput(socks5)
-    plot_avg_transmission_time(socks5)
-    plot_HR_and_RR(socks5)
-
+    #plot_avg_score_distribution(proxy_managers_list)
+    #plot_top_proxies_by_protocol(proxy_managers_list)
+    #plot_avg_syn_ack_time(socks5)
+    #plot_avg_throughput(socks5)
+    #plot_avg_transmission_time(socks5)
+    #plot_HR_and_RR(socks5)
+    """
     for manager in proxy_managers_list:
         print(f"\n{manager.get_proto()} :  ")
         for epoch_data in manager.historical_data:
             print(f"Epoch: {epoch_data['epoch']}, Proxies: {len(epoch_data['proxies'])}")
 
     move_plots(run_number=1, proxy_num=5, eval_rounds=10)
-        
+    """  
         
 
 

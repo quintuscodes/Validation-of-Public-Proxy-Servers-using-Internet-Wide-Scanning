@@ -9,13 +9,14 @@ proxies = {
         "SOCKS4": ["212.83.143.191", 12898, "France"],
         "SOCKS5" : ["212.83.143.191",12898, "France"],
         "CONNECT25": ["160.86.242.23",8080,"Japan"],
-        "http_false_80": [ "XXX.XX.XXX.XXX", 80, "ufer_hama"],
-        "socks_false_1080" : [ "XXX.XX.XXX.XXX", 1080,"ufer_hama"],
+        "http_false_80": [ "176.199.211.1", 80, "ufer_hama"],
+        "socks_false_1080" : [ "176.199.211.1", 1080,"ufer_hama"],
+        "squid_false_1080" : [ "176.199.211.1", 3128,"ufer_hama"],
         "HTTP_false" : ["202.61.206.250", 80,"Australia"]
 
 }
 proxy_manager_list = []
-proxy_list = []
+
 def construct_PMs(proxies,proxy_manager_list):
     for key in proxies:
         object = Proxy_Manager(f"{key}")

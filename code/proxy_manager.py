@@ -67,14 +67,18 @@ class Proxy_Manager:
         self.historical_data.append(epoch_data)
         
   async def fetch_proxys_write_to_class(self,proxy_number,evaluation_rounds):
-    "Fetching Proxys from open Source using proxybroker2 and writitng them to customized class"
+    "Fetching Proxys from ZMAP Scan Output and writitng them to customized class"
 
-    proxies = asyncio.Queue()
+    proxies = asyncio.Queue() # muss keine asyncio Queue sein.
     
-   
-    broker = Broker(proxies)
-    print(f"Proxybroker - FIND - Initiated for Protocol {self.protocol} ")
-    await broker.find( types=[ f'{self.protocol}'],lvl = 'HIGH', strict = True,limit=proxy_number)
+   #TODO Ersetze Broker durch zmap output.json read-in 
+
+    
+    print(f"READ IN - ZMAP Output Module - Initiated for Protocol {self.protocol} ")
+    """
+    for line in output.json
+    
+    """
     await self.write_proxy_to_class(f'{self.protocol}',proxies,evaluation_rounds)
       
     
@@ -90,13 +94,13 @@ class Proxy_Manager:
             
       ip = proxy.host
       port = proxy.port
-      country_code = proxy.geo[0]
-      country_name = proxy.geo[1]
-      country = country_code + " - " + country_name
+      #country_code = proxy.geo[0]
+      #country_name = proxy.geo[1]
+      #country = country_code + " - " + country_name
       type = _type
       self.protocol = _type
-      p = Proxy(type,ip,port,country,evaluation_rounds)
-      self.add_to_list(p)
+      p = Proxy(type,ip,port,evaluation_rounds) # Hier werden Proxy Objekte erzeugt
+      self.add_to_list(p)# hier werden proxy objekte in die Slave Liste gepeichert.
 
   "Method to add a Proxy item to the list "
   def add_to_list(self,Proxy):
@@ -119,7 +123,6 @@ class Proxy_Manager:
             f"Protocol: {proxy.protocol}",
             f"IP: {proxy.ip}",
             f"Port: {proxy.port}",
-            f"Country: {proxy.country}",
             f"Avg Score: {proxy.avg_score:.2f}",
             f"Score: {proxy.score:.2f}",
             f"Log Score: {proxy.log_score}",

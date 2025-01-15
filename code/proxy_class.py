@@ -1,4 +1,4 @@
-"""
+
 from scapy.all import *
 from scapy.layers.inet import IP
 from scapy.layers.inet import TCP
@@ -7,7 +7,7 @@ from concurrent.futures import ThreadPoolExecutor
 import requests
 import time
 import os
-"""
+
 
 
 class Proxy:
@@ -16,14 +16,14 @@ class Proxy:
   A Class for managing a single proxy fetched from the proxybroker2 python tool.
   """
 
-  def __init__(self,_proto: str,_ip,_port:int,_country:str,_handshakes:int):
+  def __init__(self,_proto: str,_ip,_port:int,_handshakes:int):
     self.protocol = _proto
     self.ip = _ip
     self.port =_port
     self.avg_score = 0
     self.score = 0
     self.log_score = []
-    self.country = _country
+    #self.country = _country
     self.handshakes = _handshakes
     self.log_handshake = []
     self.log_syn_ack_time = []
@@ -37,7 +37,7 @@ class Proxy:
     self.request_rate = 0
     self.handshake_rate = 0
 
-    print(f"Initiated Proxy: \n\n  Protokoll:  {self.protocol}IP: {self.ip}   , Port:  {self.port}, Country: {self.country} \n")
+    print(f"Initiated Proxy: \n\n  Protokoll:  {self.protocol}IP: {self.ip}   , Port:  {self.port}n")
 
   "Getter and Setter for Proxy"
   def get_avg_transmission_time(self):

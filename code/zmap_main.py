@@ -15,6 +15,7 @@ async def run_zmap_scan(output_file, target_range, ports, rate, probes):
         "-f", "saddr,sport,classification,success",
         "-r", str(rate),
         "--probes", str(probes),
+        "--output-filter= repeat = 0",
         target_range
     ]
     
@@ -91,7 +92,10 @@ async def fetch_proxys_write_to_class(manager: Proxy_Manager, output_file, http_
         port = proxy['port']
         protocol = proxy['protocol']
         p = Proxy(protocol, ip, port,6)
-        manager.add_to_list(p)
+        if p.protocol == manager.protocol:
+            manager.add_to_list(p)
+        
+
 
     print(f"Added {len(proxies)} proxies to {manager.protocol} manager.")
 
@@ -121,7 +125,16 @@ async def main():
     # Print results
     http_manager.print_proxy_list("slave")
     socks_manager.print_proxy_list("slave")
-
+    
+    #Evaluate List
+    counter = 0
+    await http_manager.evaluate_proxy_list(counter, 10,2)
+    await http_manager.sort_proxy_lists(2)
+    # Print results
+    http_manager.print_proxy_list("slave")
+    socks_manager.print_proxy_list("slave")
+    http_manager.print_proxy_list("master")
+    socks_manager.print_proxy_list("master")
 # Entry point
 if __name__ == "__main__":
     asyncio.run(main())

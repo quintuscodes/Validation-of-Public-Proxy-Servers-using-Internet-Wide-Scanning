@@ -312,7 +312,7 @@ class Proxy:
     handshake_score = (handshake_rate * 100) / 2
     self.score += handshake_score
     self.handshake_rate = handshake_rate * 100
-    self.log_handshake.clear()
+    #self.log_handshake.clear()
 
     "Calculate avg_syn_ack"
     sum_syn_ack = sum(self.log_syn_ack_time)
@@ -320,7 +320,7 @@ class Proxy:
     self.avg_syn_ack_time = avg_syn_ack_time
     if self.avg_syn_ack_time == 0.0:
         self.avg_syn_ack_time = float('inf')
-    self.log_syn_ack_time.clear() # Comment out/in if you want to print log to console
+    #self.log_syn_ack_time.clear() # Comment out/in if you want to print log to console
 
     "Calc avg_TransmissionTime"
     sum_transmission_time = sum(self.log_transmission_time)
@@ -328,13 +328,13 @@ class Proxy:
     self.avg_transmission_time = avg_transmission_time
     if self.avg_transmission_time == 0.0:
       self.avg_transmission_time = 1 #float('inf')
-    self.log_transmission_time.clear() # Comment out/in if you want to print log to console
+    #self.log_transmission_time.clear() # Comment out/in if you want to print log to console
 
     "calc AVG Throughput"
     sum_throughput = sum(self.log_throughput)
     avg_throughput = sum_throughput / evaluation_rounds
     self.avg_throughput = avg_throughput
-    self.log_throughput.clear() # Comment out/in if you want to print log to console
+    #self.log_throughput.clear() # Comment out/in if you want to print log to console
     
     "Request Score"
     succ_requests = self.log_request.count(200)
@@ -342,7 +342,7 @@ class Proxy:
     requ_score = (requests_rate * 100) / 2
     self.score += requ_score
     self.request_rate = requests_rate *100
-    self.log_request.clear()
+    #self.log_request.clear()
 
     "Failed Requests - Punish failed requests "
 

@@ -15,7 +15,8 @@ async def run_zmap_scan(output_file, target_range, ports, rate, probes):
         "-f", "saddr,sport,classification,success",
         "-r", str(rate),
         "--probes", str(probes),
-        "--output-filter= repeat = 0",
+        "--output-filter= success=1 && repeat = 0",
+        
         target_range
     ]
     
@@ -85,23 +86,23 @@ async def fetch_proxys_write_to_class(manager: Proxy_Manager, output_file, http_
     """
     Integrate ZMAP output into Proxy_Manager class.
     """
-    proxies = await parse_zmap_output(output_file, http_ports, socks_ports)
+    output = await parse_zmap_output(output_file, http_ports, socks_ports)
 
-    for proxy in proxies:
-        ip = proxy['ip']
-        port = proxy['port']
-        protocol = proxy['protocol']
+    for entry in output:
+        ip = entry['ip']
+        port = entry['port']
+        protocol = entry['protocol']
         p = Proxy(protocol, ip, port,6)
         if p.protocol == manager.protocol:
             manager.add_to_list(p)
         
 
 
-    print(f"Added {len(proxies)} proxies to {manager.protocol} manager.")
+    print(f"Added {len(output)} proxies to {manager.protocol} manager.")
 
 async def main():
     # Configuration for ZMAP
-    output_file = "output.json"
+    output_file = "output.csv"
     target_range = "192.168.0.0/24"
     ports = [80, 3128, 1080]
     rate = 64
@@ -111,12 +112,13 @@ async def main():
     http_ports = [80, 3128]
     socks_ports = [1080]
 
-    # Run ZMAP scan
-    await run_zmap_scan(output_file, target_range, ports, rate, probes)
-
     # Initialize Proxy_Manager
     http_manager = Proxy_Manager("HTTP")
     socks_manager = Proxy_Manager("SOCKS")
+
+    # Run ZMAP scan
+    await run_zmap_scan(output_file, target_range, ports, rate, probes)
+
 
     # Fetch and write proxies to managers
     await fetch_proxys_write_to_class(http_manager, output_file, http_ports, socks_ports)
@@ -126,10 +128,12 @@ async def main():
     http_manager.print_proxy_list("slave")
     socks_manager.print_proxy_list("slave")
     
+    await asyncio.sleep(10)
     #Evaluate List
     counter = 0
     await http_manager.evaluate_proxy_list(counter, 10,2)
     await http_manager.sort_proxy_lists(2)
+
     # Print results
     http_manager.print_proxy_list("slave")
     socks_manager.print_proxy_list("slave")

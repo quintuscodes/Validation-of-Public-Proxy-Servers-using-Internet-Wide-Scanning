@@ -13,7 +13,7 @@ import os
 class Proxy:
 
   """
-  A Class for managing a single proxy fetched from the proxybroker2 python tool.
+  A Class for managing a single proxy fetched from the zmap scanner.
   """
 
   def __init__(self,_proto: str,_ip,_port:int,_handshakes:int):

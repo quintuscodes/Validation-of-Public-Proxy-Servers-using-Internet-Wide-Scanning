@@ -81,11 +81,11 @@ async def parse_zmap_output(output_file, http_ports, socks_ports):
             proxies.append(proxy)
 
     return proxies
-
+"""
 async def fetch_proxys_write_to_class(manager: Proxy_Manager, output_file, http_ports, socks_ports):
-    """
-    Integrate ZMAP output into Proxy_Manager class.
-    """
+
+    #Integrate ZMAP output into Proxy_Manager class.
+    
     output = await parse_zmap_output(output_file, http_ports, socks_ports)
 
     for entry in output:
@@ -99,6 +99,23 @@ async def fetch_proxys_write_to_class(manager: Proxy_Manager, output_file, http_
 
 
     print(f"Added {len(output)} proxies to {manager.protocol} manager.")
+"""
+async def fetch_proxys_write_to_class(proxy_managers_list:list, output_file, http_ports, socks_ports):
+    """
+    Integrate ZMAP output into Proxy_Manager class.
+    """
+    output = await parse_zmap_output(output_file, http_ports, socks_ports)
+
+    for entry in output:
+        ip = entry['ip']
+        port = entry['port']
+        protocol = entry['protocol']
+        p = Proxy(protocol, ip, port,6)
+        for item in proxy_managers_list:
+
+            if item.get_proto() == p.protocol:
+                item.add_to_list(p)
+                print(f"Added {len(output)} proxies to {item.protocol} manager.")
 
 async def main():
     # Configuration for ZMAP
@@ -113,16 +130,22 @@ async def main():
     socks_ports = [1080]
 
     # Initialize Proxy_Manager
+    proxy_managers_list = []
     http_manager = Proxy_Manager("HTTP")
+    proxy_managers_list.append(http_manager)
     socks_manager = Proxy_Manager("SOCKS")
+    proxy_managers_list.append(socks_manager)
+    
+    num_proto = len(proxy_managers_list)
 
     # Run ZMAP scan
     await run_zmap_scan(output_file, target_range, ports, rate, probes)
 
 
     # Fetch and write proxies to managers
-    await fetch_proxys_write_to_class(http_manager, output_file, http_ports, socks_ports)
-    await fetch_proxys_write_to_class(socks_manager, output_file, http_ports, socks_ports)
+    #await fetch_proxys_write_to_class(http_manager, output_file, http_ports, socks_ports)
+    #await fetch_proxys_write_to_class(socks_manager, output_file, http_ports, socks_ports)
+    await fetch_proxys_write_to_class(proxy_managers_list,output_file, http_ports, socks_ports)
 
     # Print results
     http_manager.print_proxy_list("slave")
@@ -133,6 +156,8 @@ async def main():
     counter = 0
     await http_manager.evaluate_proxy_list(counter, 10,2)
     await http_manager.sort_proxy_lists(2)
+    await socks_manager.evaluate_proxy_list(counter,10,2)
+    await socks_manager.sort_proxy_lists(2)
 
     # Print results
     http_manager.print_proxy_list("slave")

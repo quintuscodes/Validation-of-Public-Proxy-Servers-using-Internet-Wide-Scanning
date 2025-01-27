@@ -117,18 +117,18 @@ async def fetch_proxys_write_to_class(proxy_managers_list:list, output_file, htt
 
             if item.get_proto() == p.protocol:
                 item.add_to_list(p)
-                print(f"Added {len(output)} proxies to {item.protocol} manager.")
+                print(f"Added {len(item.get_proxy_list())} proxies to {item.protocol} manager.")
 
 async def main():
     # Configuration for ZMAP
     output_file = "output.csv"
     target_range = "192.168.0.0/24"
-    ports = [80, 3128, 1080]
+    ports = [80,443, 3128, 1080,8080]
     rate = 64
     probes = 2
 
     # Define port-to-protocol mapping
-    http_ports = [80, 3128]
+    http_ports = [80,443, 3128,8080]
     socks_ports = [1080]
 
     # Initialize Proxy_Manager
@@ -145,46 +145,26 @@ async def main():
 
 
     # Fetch and write proxies to managers
-    #await fetch_proxys_write_to_class(http_manager, output_file, http_ports, socks_ports)
-    #await fetch_proxys_write_to_class(socks_manager, output_file, http_ports, socks_ports)
     await fetch_proxys_write_to_class(proxy_managers_list,output_file, http_ports, socks_ports)
 
-    # Print results
-    #http_manager.print_proxy_list("slave")
-    #socks_manager.print_proxy_list("slave")
+    
     
     await asyncio.sleep(10)
     #Evaluate List
     counter = 0
-    #await http_manager.evaluate_proxy_list(counter, 10,10)
-    #await http_manager.sort_proxy_lists(2)
-    #await socks_manager.evaluate_proxy_list(counter,10,10)
-    #await socks_manager.sort_proxy_lists(2)
-    #await sort_proxy_managers(proxy_managers_list,10)
-
-    # Print results
-    #http_manager.print_proxy_list("slave")
-    #socks_manager.print_proxy_list("slave")
-    #http_manager.print_proxy_list("master")
-    #socks_manager.print_proxy_list("master")
-
     "Recursive Re-Evaluate List: Dynamic Approach"
     
     global stop_counter
     stop_counter = 0
-    for manager in proxy_managers_list:
-            
-            manager.add_epoch_data(epoch_number=stop_counter)
-        
     print(proxy_managers_list)
     await rec_wait_and_evaluate_again(proxy_managers_list,counter,5,10,num_proto, stop_counter)
 
-    """
+    
     for manager in proxy_managers_list:
         print(f"\n{manager.get_proto()} :  ")
         for epoch_data in manager.historical_data:
             print(f"Epoch: {epoch_data['epoch']}, Proxies: {len(epoch_data['proxies'])}")
-    """
+    
 # Entry point
 if __name__ == "__main__":
     asyncio.run(main())

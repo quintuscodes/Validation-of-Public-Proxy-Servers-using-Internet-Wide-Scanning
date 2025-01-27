@@ -55,10 +55,10 @@ async def rec_wait_and_evaluate_again(proxy_managers_list, counter, evaluation_r
     #await print_proxy_managers(proxy_managers_list,"master")
     
 
-    if stop_counter < 10: #Adapt the number of Epochs here
+    if stop_counter < 5: #Adapt the number of Epochs here
         await rec_wait_and_evaluate_again(proxy_managers_list,counter,evaluation_rounds,proxy_number,num_proto,stop_counter)
     
-    elif stop_counter >= 10:#Adapt the number of Epochs here
+    elif stop_counter >= 5:#Adapt the number of Epochs here
         await print_proxy_managers(proxy_managers_list,"master")
         return
     

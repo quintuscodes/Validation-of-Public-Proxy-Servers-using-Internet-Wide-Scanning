@@ -109,7 +109,7 @@ class Proxy_Manager:
     attrs = vars(Proxy)
     print(f"\nAdded to List:\n" + ', \n'.join("%s: %s" % item for item in attrs.items()) + "\n")
   
-  def print_proxy_list(self, arg): #TODO ADD async keyword AGAIN!!
+  async def print_proxy_list(self, arg): #TODO ADD async keyword AGAIN!!
     """
     Method to print the actual proxy_list with enhanced ASCII art representation designed by ChatGPT
     """

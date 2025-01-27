@@ -3,6 +3,8 @@ import subprocess
 import json
 from proxy_manager import Proxy_Manager
 from proxy_class import Proxy 
+from functions import *
+#from plots import *
 
 async def run_zmap_scan(output_file, target_range, ports, rate, probes):
     """
@@ -148,22 +150,41 @@ async def main():
     await fetch_proxys_write_to_class(proxy_managers_list,output_file, http_ports, socks_ports)
 
     # Print results
-    http_manager.print_proxy_list("slave")
-    socks_manager.print_proxy_list("slave")
+    #http_manager.print_proxy_list("slave")
+    #socks_manager.print_proxy_list("slave")
     
     await asyncio.sleep(10)
     #Evaluate List
     counter = 0
-    await http_manager.evaluate_proxy_list(counter, 10,2)
-    await http_manager.sort_proxy_lists(2)
-    await socks_manager.evaluate_proxy_list(counter,10,2)
-    await socks_manager.sort_proxy_lists(2)
+    #await http_manager.evaluate_proxy_list(counter, 10,10)
+    #await http_manager.sort_proxy_lists(2)
+    #await socks_manager.evaluate_proxy_list(counter,10,10)
+    #await socks_manager.sort_proxy_lists(2)
+    #await sort_proxy_managers(proxy_managers_list,10)
 
     # Print results
-    http_manager.print_proxy_list("slave")
-    socks_manager.print_proxy_list("slave")
-    http_manager.print_proxy_list("master")
-    socks_manager.print_proxy_list("master")
+    #http_manager.print_proxy_list("slave")
+    #socks_manager.print_proxy_list("slave")
+    #http_manager.print_proxy_list("master")
+    #socks_manager.print_proxy_list("master")
+
+    "Recursive Re-Evaluate List: Dynamic Approach"
+    
+    global stop_counter
+    stop_counter = 0
+    for manager in proxy_managers_list:
+            
+            manager.add_epoch_data(epoch_number=stop_counter)
+        
+    print(proxy_managers_list)
+    await rec_wait_and_evaluate_again(proxy_managers_list,counter,5,10,num_proto, stop_counter)
+
+    """
+    for manager in proxy_managers_list:
+        print(f"\n{manager.get_proto()} :  ")
+        for epoch_data in manager.historical_data:
+            print(f"Epoch: {epoch_data['epoch']}, Proxies: {len(epoch_data['proxies'])}")
+    """
 # Entry point
 if __name__ == "__main__":
     asyncio.run(main())

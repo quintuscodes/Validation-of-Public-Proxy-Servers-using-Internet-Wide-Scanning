@@ -7,6 +7,22 @@ import os
 import shutil
 "Script for plotting the Project Proxy Manager Data."
 
+def plot_everything(proxy_managers_list,arg):
+    "Plotting,args: pm_list, pm_instanz for param plots"
+    plot_avg_score_distribution(proxy_managers_list)
+    plot_top_proxies_by_protocol(proxy_managers_list)
+    plot_avg_syn_ack_time(arg)
+    plot_avg_throughput(arg)
+    plot_avg_transmission_time(arg)
+    plot_HR_and_RR(arg)
+    
+    for manager in proxy_managers_list:
+        print(f"\n{manager.get_proto()} :  ")
+        for epoch_data in manager.historical_data:
+            print(f"Epoch: {epoch_data['epoch']}, Proxies: {len(epoch_data['proxies'])}")
+
+    move_plots(run_number=1, proxy_num=5, eval_rounds=10)
+ 
 
 def plot_avg_score_distribution(proxy_managers):
     data = []

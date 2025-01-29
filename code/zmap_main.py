@@ -124,7 +124,7 @@ async def main():
     output_file = "output.csv"
     #target_range = "192.168.0.0/24"
     target_range = "10.20.30.0/24"
-    ports = [80,443, 3128, 1080,8080]
+    ports = [80, 3128, 1080,8080] # + 443 HTTPS
     rate = 64
     probes = 2
 

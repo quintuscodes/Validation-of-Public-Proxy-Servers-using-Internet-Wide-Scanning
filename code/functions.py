@@ -41,8 +41,8 @@ async def rec_wait_and_evaluate_again(proxy_managers_list, counter, evaluation_r
 
     #TODO refresh the list with reliable proxys still not refilling enough proxys.
     
-    #re_refresh_tasks = []
-    #await Checker(proxy_managers_list,re_refresh_tasks,proxy_number,num_proto,counter,num_proto)
+    #re_refresh_tasks = [] # Proxybroker Functionality
+    #await Checker(proxy_managers_list,re_refresh_tasks,proxy_number,num_proto,counter,num_proto) # Proxybroker functionality
 
     reset_proxy_objects(proxy_managers_list) # reset proxy Objects and init Master/Proxy List for new evaluation Update
 
@@ -76,6 +76,8 @@ async def generate_refresh_tasks(proxy_managers_list, counter, evaluation_rounds
         
     return re_refresh_tasks
 
+"""
+Proxybroker project functionality
 async def Checker(proxy_managers_list,refresh_tasks:list,proxy_number,num_proto,counter,evaluation_rounds):
     unbalanced = True
 
@@ -108,3 +110,4 @@ async def Checker(proxy_managers_list,refresh_tasks:list,proxy_number,num_proto,
             
 
         checked.clear()
+"""

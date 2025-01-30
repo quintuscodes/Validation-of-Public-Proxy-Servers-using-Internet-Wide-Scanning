@@ -83,25 +83,7 @@ async def parse_zmap_output(output_file, http_ports, socks_ports):
             proxies.append(proxy)
 
     return proxies
-"""
-async def fetch_proxys_write_to_class(manager: Proxy_Manager, output_file, http_ports, socks_ports):
 
-    #Integrate ZMAP output into Proxy_Manager class.
-    
-    output = await parse_zmap_output(output_file, http_ports, socks_ports)
-
-    for entry in output:
-        ip = entry['ip']
-        port = entry['port']
-        protocol = entry['protocol']
-        p = Proxy(protocol, ip, port,6)
-        if p.protocol == manager.protocol:
-            manager.add_to_list(p)
-        
-
-
-    print(f"Added {len(output)} proxies to {manager.protocol} manager.")
-"""
 async def fetch_proxys_write_to_class(proxy_managers_list:list, output_file, http_ports, socks_ports):
     """
     Integrate ZMAP output into Proxy_Manager class.

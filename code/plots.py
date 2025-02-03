@@ -35,7 +35,7 @@ def plot_avg_score_distribution(proxy_managers):
     pastel_colors = ['#AEC6CF', '#FFB7B2', '#B39EB5', '#FFDAC1']
 
     #Information
-    info = 'Proxy_Num = 10, Eval_per_Iter = 10, Eval_Rounds = 6'
+    info = 'Evaluation Rounds per Iteration = 10, Evaluation Epochs = 5'
     # Convert to a DataFrame for easier plotting (requires pandas)
     
     df = pd.DataFrame(data)

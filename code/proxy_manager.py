@@ -222,41 +222,7 @@ class Proxy_Manager:
     
     self.master_proxy_list.sort(key=lambda Proxy: Proxy.score, reverse=True)
     self.proxy_list.clear()
-
-  async def refresh_proxy_list(self,counter,proxy_number,evaluation_rounds ):
-        
-        "A method to refill the proxy list with new evaluated Proxys score > 100"
-        self.proxy_list.clear() #TODO is this necessary?
-        if self.ready_for_connection == False:
-            if len(self.master_proxy_list) < proxy_number: 
-                print(f"Refreshing the {self.protocol} Proxy List \n")
-                
-                
-                await asyncio.gather(self.fetch_proxys_write_to_class(proxy_number,evaluation_rounds))
-                await asyncio.gather(self.evaluate_proxy_list(counter, evaluation_rounds,proxy_number))
-                
-
-                await self.sort_proxy_lists(proxy_number)
-
-                if len(self.master_proxy_list) < proxy_number:
-                    print(f"{self.protocol} List NOT READY")
-                    await asyncio.sleep(2)
-                    await self.refresh_proxy_list(counter,proxy_number,evaluation_rounds )
-                    
-                else:
-                    self.ready_for_connection = True
-                    
-
-            else:
-                self.ready_for_connection = True
-                await self.sort_proxy_lists(proxy_number)
-                print(f"{self.protocol}  *** MASTER *** Proxy List is ready for Connection")
-                
-        else:
-          
-          print(f"{self.protocol}  *** MASTER *** Proxy List is ready for Connection")
-
-    
+  
   def reset_proxys(self):
      for proxy_object in self.master_proxy_list:
         proxy_object.reset_attributes()

@@ -23,7 +23,6 @@ class Proxy:
     self.avg_score = 0
     self.score = 0
     self.log_score = []
-    #self.country = _country
     self.handshakes = _handshakes
     self.log_handshake = []
     self.log_syn_ack_time = []
@@ -143,15 +142,21 @@ class Proxy:
 
     loop = asyncio._get_running_loop()
     with ThreadPoolExecutor() as pool:
-       await loop.run_in_executor(pool, self.evaluate_handshakes)
-       print(f"Completed Handshake evaluation for {self.ip}")
-       await loop.run_in_executor(pool,self.evaluate_throughput)
-       print(f"Completed Throughput evaluation for {self.ip}")
-       await loop.run_in_executor(pool,self.evaluate_request)
-       print(f"Completed Request evaluation for {self.ip}")
-       
-
-
+        "Dynamic Approach"
+        await asyncio.gather(
+            loop.run_in_executor(pool, self.evaluate_handshakes),
+            loop.run_in_executor(pool, self.evaluate_throughput),
+            loop.run_in_executor(pool, self.evaluate_request)
+        )
+        """
+        sequential approach
+        await loop.run_in_executor(pool, self.evaluate_handshakes)
+        print(f"Completed Handshake evaluation for {self.ip}")
+        await loop.run_in_executor(pool,self.evaluate_throughput)
+        print(f"Completed Throughput evaluation for {self.ip}")
+        await loop.run_in_executor(pool,self.evaluate_request)
+        print(f"Completed Request evaluation for {self.ip}")
+       """
 
   def evaluate_handshakes(self):
       

@@ -16,11 +16,9 @@ class Proxy_Manager:
 
   "Construcotr"
   def __init__(self,_protocol):
-    self.ready_for_connection = False
     self.protocol = _protocol
     self.master_proxy_list = []
     self.proxy_list = []
-    self.log_evaluation_time = []
     self.historical_data = []
 
 
@@ -65,43 +63,7 @@ class Proxy_Manager:
             ]
         }
         self.historical_data.append(epoch_data)
-        
-  async def fetch_proxys_write_to_class(self,proxy_number,evaluation_rounds):
-    "Fetching Proxys from ZMAP Scan Output and writitng them to customized class"
-
-    proxies = asyncio.Queue() # muss keine asyncio Queue sein.
-    
-   #TODO Ersetze Broker durch zmap output.json read-in 
-
-    
-    print(f"READ IN - ZMAP Output Module - Initiated for Protocol {self.protocol} ")
-    """
-    for line in output.json
-    
-    """
-    await self.write_proxy_to_class(f'{self.protocol}',proxies,evaluation_rounds)
-      
-    
-    
-  async def write_proxy_to_class(self,_type, proxies,evaluation_rounds):
-    "Method to write proxys to customized class and adding to proxy list  "
-
-    
-    while True:
-      proxy = await proxies.get()
-      if proxy is None:
-          break
-            
-      ip = proxy.host
-      port = proxy.port
-      #country_code = proxy.geo[0]
-      #country_name = proxy.geo[1]
-      #country = country_code + " - " + country_name
-      type = _type
-      self.protocol = _type
-      p = Proxy(type,ip,port,evaluation_rounds) # Hier werden Proxy Objekte erzeugt
-      self.add_to_list(p)# hier werden proxy objekte in die Slave Liste gepeichert.
-
+  
   "Method to add a Proxy item to the list "
   def add_to_list(self,Proxy):
     self.proxy_list.append(Proxy)

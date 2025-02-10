@@ -7,6 +7,7 @@ Illustrates the Proxy Manager and Proxy classes with Getters & Setters. <br>
 <br>
 
 ```mermaid 
+
 %%{init: {'theme':'neutral'}}%%
 classDiagram
 
@@ -84,6 +85,7 @@ The Sequence Diagram illustrating the program control flow of the proxy validati
 <br>
 <br>
 <br>
+
 ```mermaid 
 
 sequenceDiagram
@@ -231,5 +233,75 @@ sequenceDiagram
       deactivate socks5
       deactivate main
     end
+    
+```
+
+# Sequence Diagram ZMAP
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor main as "main.py"
+    
+    participant zmap as "ZMAP"
+    
+    participant http as     "HTTP   :: Proxy_Manager"
+    participant socks as    "SOCKS  :: Proxy_Manager"
+    participant proxy as    "Proxy  :: Proxy"
+    participant functions as Functions
+
+    main->>+main: asyncio.run(main())
+
+    Note left of main: 
+
+    main->>+http: new Proxy_Manager("HTTP")
+    http-->>main: http_manager
+    main->>main: proxy_managers_list.append(http_manager)
+    main->>+socks: new Proxy_Manager("SOCKS)
+    socks-->>main: socks_manager
+    main->>main: proxy_managers_list.append(socks_manager)
+
+    
+    main->>+zmap: await run_zmap_scan(output_file,target_range,ports,rate,probes)
+
+    Note left of main: Step I. - Zmap Scan
+    zmap->>zmap: await asyncio.subprocess(*zmap_command)
+
+    zmap-->>main: output.csv
+    Note left of main: Step II. - Fetch Proxies
+    main->>zmap: await fetch_proxys_write_to_class(PM_List,output_file,http_ports,socks_ports)
+    
+    zmap->>zmap: parse_zmap_output(output_file,http_ports,socks_ports)
+
+    loop output.csv
+        zmap->>+proxy: new proxy(protocol,ip,port)
+
+        alt proxy.port is in http_ports
+            
+            proxy-->>http: http_manager.add_to_list(proxy)
+        else proxy.port is in socks_ports
+            proxy-->>socks: socks_manager.add_to_list(proxy)
+        end
+    end
+
+    deactivate zmap
+
+    Note left of main: Step III. & IV.
+
+    main->>+functions: await dynamic_evaluate_call(proxy_managers_list)
+
+    loop  stop_counter < epoch_number
+        functions->>socks: log_scores()
+        functions->>http:log_scores()
+        loop
+        Note over functions: Wait 20s
+      end
+    end
+
+    deactivate functions
+    deactivate http
+    deactivate socks
+    deactivate proxy
+    deactivate main
     
 ```

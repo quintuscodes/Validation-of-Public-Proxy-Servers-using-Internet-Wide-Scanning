@@ -309,7 +309,7 @@ sequenceDiagram
         functions->>functions: await asyncio.gather(*re_evaluate_tasks)
         par evaluate http
         functions-)http: http.evaluate_proxy_list()
-        loop evaluation_rounds
+        loop iterate for 10 evaluation_rounds
         
           par evaluate proxys concurrently with asyncio
             http-)proxy: proxy.evaluate()

@@ -8,6 +8,7 @@ async def run_zmap_scan(output_file, target_range, ports, rate, probes):
     """
     zmap_command = [
         "sudo", "zmap",
+        "--probe-module=tcp_synscan",
         "-p", ",".join(map(str, ports)),
         "-o", output_file,
         "-f", "saddr,sport,classification,success",

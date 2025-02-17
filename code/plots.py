@@ -1,16 +1,37 @@
 
 import matplotlib.pyplot as plt
-import seaborn as sns
-import pandas as pd
-import numpy as np
+from proxy_manager import Proxy_Manager
+#import seaborn as sns
+#import pandas as pd
+#import numpy as np
 import os 
 import shutil
+import csv
+
 "Script for plotting the Project Proxy Manager Data."
+
+def export_proxy_data(proxy_manager1:Proxy_Manager,proxy_manager2:Proxy_Manager):
+    historical_data1 = proxy_manager1.get_hist_data()
+    historical_data2 = proxy_manager2.get_hist_data()
+
+    combined_historical_data = historical_data1 + historical_data2
+    
+    
+    filename="proxy_data.csv"
+
+    with open(filename, mode='w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(["Epoch", "IP", "Port", "Avg SYN-ACK Time", "Avg Transmission Time", "Avg Throughput", "Handshake Rate", "Request Rate"])
+
+        for epoch_data in combined_historical_data:
+            epoch = epoch_data['epoch']
+            for proxy in epoch_data['proxies']:
+                writer.writerow([epoch, proxy['ip'], proxy['port'], proxy['avg_syn_ack_time'], proxy['avg_transmission_time'], proxy['avg_throughput'], proxy['handshake_rate'], proxy['request_rate']])
 
 def plot_everything(proxy_managers_list,arg):
     "Plotting,args: pm_list, pm_instanz for param plots"
-    plot_avg_score_distribution(proxy_managers_list)
-    plot_top_proxies_by_protocol(proxy_managers_list)
+    #plot_avg_score_distribution(proxy_managers_list)
+    #plot_top_proxies_by_protocol(proxy_managers_list)
     plot_avg_syn_ack_time(arg)
     plot_avg_throughput(arg)
     plot_avg_transmission_time(arg)

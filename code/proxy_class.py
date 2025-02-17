@@ -148,15 +148,7 @@ class Proxy:
             loop.run_in_executor(pool, self.evaluate_throughput),
             loop.run_in_executor(pool, self.evaluate_request)
         )
-        """
-        sequential approach
-        await loop.run_in_executor(pool, self.evaluate_handshakes)
-        print(f"Completed Handshake evaluation for {self.ip}")
-        await loop.run_in_executor(pool,self.evaluate_throughput)
-        print(f"Completed Throughput evaluation for {self.ip}")
-        await loop.run_in_executor(pool,self.evaluate_request)
-        print(f"Completed Request evaluation for {self.ip}")
-       """
+        
 
   def evaluate_handshakes(self):
       

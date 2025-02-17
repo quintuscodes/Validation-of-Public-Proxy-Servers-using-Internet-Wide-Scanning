@@ -5,14 +5,13 @@ from proxy_manager import Proxy_Manager
 from proxy_class import Proxy 
 from functions import *
 from Zmap_code import *
-#from plots import *
+from plots import export_proxy_data
 
 
 async def main():
     # Configuration for ZMAP
     output_file = "output.csv"
     target_range = "192.168.0.0/24"
-    #target_range = "10.20.30.0/24"
     ports = [80,443, 3128, 1080,8080] # + 443 HTTPS
     rate = 64
     probes = 2
@@ -42,14 +41,14 @@ async def main():
     
     #Evaluate List
     counter = 0
-    "Recursive Re-Evaluate List: Dynamic Approach"
+    "Re-Evaluate List: Dynamic Approach"
     
     global stop_counter
     stop_counter = 0
     
     await dynamic_evaluate_call(proxy_managers_list,counter,2,10,num_proto, stop_counter) #Step III. & Step IV. 
 
-    
+    export_proxy_data(http_manager,socks_manager)
     
 # Entry point
 if __name__ == "__main__":

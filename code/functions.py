@@ -26,7 +26,7 @@ async def dynamic_evaluate_call(proxy_managers_list, counter, evaluation_rounds,
     Re-Evaluate every 20s, remove not reliable Proxys with avg_score < 100
     
     """
-    epoch_number = 3
+    epoch_number = 10
     while stop_counter < epoch_number: 
         stop_counter += 1
         

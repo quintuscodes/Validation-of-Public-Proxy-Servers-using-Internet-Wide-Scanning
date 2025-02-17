@@ -1,10 +1,7 @@
-
-#from scapy.all import *
 import asyncio
-#from proxybroker import Broker, Proxy # type: ignore
 from proxy_class import Proxy
-#from proxy_manager import Proxy
-#from main import *
+
+
 
 
 class Proxy_Manager:

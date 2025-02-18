@@ -144,7 +144,11 @@ class Proxy_Manager:
     
     
     "Reward the Best Proxys in evaluation parameters - sort after score - then give 15,10,5 Points credit score"
-
+    """
+    During ZMAP approach test scenario this is unneccesary hence we dont have more than 1,2 proxys per proxy manager.
+    In an Internet-Wide-Scan with 1:m proxys this needs to be added again.
+    """
+    """
     first = 15
     second = 10
     third = 5
@@ -190,7 +194,7 @@ class Proxy_Manager:
           print(f"{third} Points Credit to IP: {self.proxy_list[2].ip} in avg_transmission_time PROT: {self.protocol} ")
         if i == 2:
           print(f"{third} Points Credit to IP: {self.proxy_list[2].ip} in avg_throughput PROT: {self.protocol} ")
-
+    """
     for i in range(len(self.proxy_list)):
         proxy = self.get_proxy(i)
         
@@ -209,10 +213,10 @@ class Proxy_Manager:
       
       for proxy in self.proxy_list:
         #proxy.set_rates()
-        if proxy.score < 100:
+        if proxy.score < 60 and proxy.get_avg_score() < 60:
           self.proxy_list.remove(proxy)
-          print("\n Removed Proxys with score <= 100 \n")
-        elif proxy.score >= 100 and len(self.master_proxy_list) < proxy_number:
+          print("\n Removed Proxys with avg_score <= 60 \n")
+        elif proxy.score >= 60 and len(self.master_proxy_list) < proxy_number or proxy.get_avg_score() >= 60:
           
           self.master_proxy_list.append(proxy)
     
@@ -232,5 +236,5 @@ class Proxy_Manager:
         proxy_object.set_avg_score() #Average Score for up to date reliability attribute criteria
 
         if len(proxy_object.log_score) > 1:
-           if proxy_object.get_avg_score() <= 100:
+           if proxy_object.get_avg_score() <= 80:
               self.master_proxy_list.remove(proxy_object)

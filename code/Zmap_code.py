@@ -91,7 +91,7 @@ async def fetch_proxys_write_to_class(proxy_managers_list:list, output_file, htt
         ip = entry['ip']
         port = entry['port']
         protocol = entry['protocol']
-        p = Proxy(protocol, ip, port,6)
+        p = Proxy(protocol, ip, port,10)
         for item in proxy_managers_list:
 
             if item.get_proto() == p.protocol:

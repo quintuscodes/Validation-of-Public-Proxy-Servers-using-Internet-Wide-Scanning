@@ -16,7 +16,15 @@ def export_proxy_data(proxy_manager1:Proxy_Manager,proxy_manager2:Proxy_Manager)
 
     combined_historical_data = historical_data1 + historical_data2
     
-    
+    filename = "avg_score.csv"
+    with open(filename, mode='w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow([ "IP", "Port", "avg_score"])
+        for proxy in proxy_manager1.get_master_list():
+            writer.writerow([proxy.get_ip(),proxy.get_port(),proxy.get_avg_score()])
+        for proxy in proxy_manager2.get_master_list():
+            writer.writerow([proxy.get_ip(),proxy.get_port(),proxy.get_avg_score()])
+            
     filename="proxy_data.csv"
 
     with open(filename, mode='w', newline='') as file:

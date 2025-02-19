@@ -212,14 +212,16 @@ class Proxy_Manager:
     if len(self.master_proxy_list) < proxy_number:
       
       for proxy in self.proxy_list:
+        
         #proxy.set_rates()
-        if proxy.score < 60 and proxy.get_avg_score() < 60:
-          self.proxy_list.remove(proxy)
-          print("\n Removed Proxys with avg_score <= 60 \n")
-        elif proxy.score >= 60 and len(self.master_proxy_list) < proxy_number or proxy.get_avg_score() >= 60:
+        #if proxy.score < 50: Activate for 10+ proxy objects when scanning large public networks
+          #self.proxy_list.remove(proxy)
+          #print("\n Removed Proxys with score <= 50 \n")
+        if proxy.score >= 80 and len(self.master_proxy_list) < proxy_number:
           
           self.master_proxy_list.append(proxy)
-    
+        
+        
     
     self.master_proxy_list.sort(key=lambda Proxy: Proxy.score, reverse=True)
     self.proxy_list.clear()
@@ -235,6 +237,6 @@ class Proxy_Manager:
         proxy_object.set_log_score()# Store score before reset
         proxy_object.set_avg_score() #Average Score for up to date reliability attribute criteria
 
-        if len(proxy_object.log_score) > 1:
+        if len(proxy_object.log_score) > 5:
            if proxy_object.get_avg_score() <= 80:
               self.master_proxy_list.remove(proxy_object)

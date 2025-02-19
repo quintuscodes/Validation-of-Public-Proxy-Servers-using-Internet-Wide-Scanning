@@ -46,7 +46,7 @@ async def main():
     global stop_counter
     stop_counter = 0
     
-    await dynamic_evaluate_call(proxy_managers_list,counter,2,10,num_proto, stop_counter) #Step III. & Step IV. 
+    await dynamic_evaluate_call(proxy_managers_list,counter,10,10,num_proto, stop_counter) #Step III. & Step IV. 
 
     export_proxy_data(http_manager,socks_manager)
     

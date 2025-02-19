@@ -307,7 +307,7 @@ sequenceDiagram
         socks->>proxy: reset_attributes()
         functions->>functions: await generate_evaluate_tasks()
         functions->>functions: await asyncio.gather(*re_evaluate_tasks)
-        Note over socks: Start validation
+        Note between http,socks: Start validation
         par evaluate http
         functions-)http: http.evaluate_proxy_list()
         loop iterate for 10 evaluation_rounds per evaluation epoch

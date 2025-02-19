@@ -236,7 +236,7 @@ sequenceDiagram
     
 ```
 
-# Sequence Diagram ZMAP
+# Sequence Diagram - ZMap Scan & Validation Data Structure
 
 ```mermaid
 sequenceDiagram
@@ -252,7 +252,7 @@ sequenceDiagram
 
     main->>+main: asyncio.run(main())
 
-    Note left of main: 
+    Note right of main: ZMAP IP-Range + Port Declaration
 
     main->>+http: new Proxy_Manager("HTTP")
     http-->>main: http_manager
@@ -286,30 +286,31 @@ sequenceDiagram
 
     deactivate zmap
 
-    Note left of main: Step III. & IV.
+    Note left of main: Step III. & IV. - Validate and Scoring Mechanism
 
     main->>+functions: await dynamic_evaluate_call(proxy_managers_list)
     
-    loop  stop_counter < epoch_number
-        Note right of functions: Evaluate n = epoch_number epochs
+    loop  Evaluate 10 epochs
+        
         functions->>socks: log_scores()
         functions->>http:log_scores()
         loop
-        Note over functions: Wait t=20s between evaluation epochs
+        Note over functions: Wait 20s between evaluation epochs
         end
         functions->>functions: reset_proxy_objects(PM_List)
         functions->>http: reset_proxys()
-        Note over http,proxy: Reset evaluated Fields of existing Proxy Objects before new Evaluation Round
+        Note over http,proxy: Reset evaluated fields of proxy objects before new evaluation epoch
         http->>proxy: reset_attributes()
       
         functions->>socks: reset_proxys()
-        Note over socks,functions: Reset evaluated Fields of existing Proxy Objects before new Evaluation Round
+        
         socks->>proxy: reset_attributes()
         functions->>functions: await generate_evaluate_tasks()
         functions->>functions: await asyncio.gather(*re_evaluate_tasks)
+        Note over socks: Start validation
         par evaluate http
         functions-)http: http.evaluate_proxy_list()
-        loop iterate for 10 evaluation_rounds
+        loop iterate for 10 evaluation_rounds per evaluation epoch
         
           par evaluate proxys concurrently with asyncio
             http-)proxy: proxy.evaluate()
@@ -321,12 +322,24 @@ sequenceDiagram
             end
             proxy->>proxy: proxy.calc_score()
             proxy-->>http: return
-            http->>http: reward_best_proxys()
           end
         end
       and evaluate socks
         functions-)socks: socks.evaluate_proxy_list()
-        Note right of functions: Equivalent to http
+        loop iterate for 10 evaluation_rounds per evaluation epoch
+        
+          par evaluate proxys concurrently with asyncio
+            socks-)proxy: proxy.evaluate()
+            par evaluate proxy parameters concurrently
+            Note over socks: asyncio ThreadPoolExecutor 
+              proxy-)proxy: evaluate_handshakes()
+              proxy-)proxy: evaluate_throughput()
+              proxy-)proxy: evaluate_request()
+            end
+            proxy->>proxy: proxy.calc_score()
+            proxy-->>socks: return
+          end
+        end
       end
       functions->>functions: sort_proxy_managers(PM_List)
       functions->>functions: print_proxy_managers(PM_List,"master")
@@ -337,5 +350,5 @@ sequenceDiagram
     deactivate socks
     deactivate proxy
     deactivate main
-    
+  
 ```

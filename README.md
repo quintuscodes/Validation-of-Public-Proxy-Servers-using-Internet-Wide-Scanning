@@ -1,8 +1,8 @@
 # Validation-of-Public-Proxy-Servers-using-Internet-Wide-Scanning
-The Repository's purpose is an Investigation of public proxy servers. Proxy Servers are identified using the open-source internet-wide-scanning Tool Zmap. <br> Objects should be evaluated in order to make a statement how proxy servers of the public adress space are available and reliable. <br>
+The Repository's purpose is an investigation of public proxy servers. Proxy Servers are identified using the open-source internet-wide-scanning tool Zmap. <br> Objects should be evaluated in order to make a statement how proxy servers of the public adress space are available and reliable. <br>
 
 # Class Diagram
-Illustrates the Proxy Manager and Proxy classes with Getters & Setters. <br>
+Illustrates the Proxy Manager and Proxy class with Getters & Setters. <br>
 <br>
 <br>
 
@@ -81,7 +81,9 @@ classDiagram
 ```
 
 # Sequence Diagram - ZMap Scan & Validation Data Structure
-
+The sequence diagram shows the program control flow. <br>
+The defined network address space is scanned(tcp-port scan) in order to detect running and open public proxy services. <br>
+In addition the output is used to parse the data and run validation methods in order to get a ranked list of more and less reliable proxy objects.
 ```mermaid
 sequenceDiagram
     autonumber

@@ -1,15 +1,15 @@
 
 import matplotlib.pyplot as plt
-from proxy_manager import Proxy_Manager
-#import seaborn as sns
-#import pandas as pd
+#from proxy_manager import Proxy_Manager
+import seaborn as sns
+import pandas as pd
 import numpy as np
 import os 
 import shutil
 import csv
 
 "Script for plotting the Project Proxy Manager Data."
-
+"""
 def export_proxy_data(proxy_manager1:Proxy_Manager,proxy_manager2:Proxy_Manager):
     historical_data1 = proxy_manager1.get_hist_data()
     historical_data2 = proxy_manager2.get_hist_data()
@@ -35,7 +35,7 @@ def export_proxy_data(proxy_manager1:Proxy_Manager,proxy_manager2:Proxy_Manager)
             epoch = epoch_data['epoch']
             for proxy in epoch_data['proxies']:
                 writer.writerow([epoch, proxy['ip'], proxy['port'], proxy['avg_syn_ack_time'], proxy['avg_transmission_time'], proxy['avg_throughput'], proxy['handshake_rate'], proxy['request_rate']])
-
+"""
 def plot_everything():
     "Plotting,args: pm_list, pm_instanz for param plots"
     #plot_avg_score_distribution(proxy_managers_list)
@@ -45,7 +45,7 @@ def plot_everything():
     plot_avg_transmission_time("proxy_data.csv")
     plot_HR_and_RR("proxy_data.csv")
     
-    move_plots(run_number="Default")
+    move_plots(run_number="Lauf_NetEM_50ms _15ms_loss_6%_3%_corrupt_2%")
 
 def format_label(ip, port):
     """Formatiert die Legende mit IP, Port und Proxy-Typ."""
@@ -103,7 +103,13 @@ def plot_top_proxies_by_protocol(csv_filename, top_n=2):
     # Sortiere nach avg_score, absteigend
     df_sorted = df.sort_values(by="avg_score", ascending=False)
 
-    # HTTP-Proxies jetzt inkl. Port 80
+    # Mapping Port → Protokoll erstellen
+    port_to_protocol = {80: "HTTP-Standard-Gateway", 3128: "HTTP-Proxy", 1080: "SOCKS-Proxy"}
+    
+    # Neue Spalte für das Protokoll basierend auf dem Port hinzufügen
+    df_sorted["Protocol"] = df_sorted["Port"].map(port_to_protocol)
+
+    # Filtere die Top-N Proxies für jedes Protokoll
     df_http_gateway = df_sorted[df_sorted["Port"] == 80].head(top_n)
     df_http_proxy = df_sorted[df_sorted["Port"] == 3128].head(top_n)
     df_socks = df_sorted[df_sorted["Port"] == 1080].head(top_n)
@@ -116,11 +122,11 @@ def plot_top_proxies_by_protocol(csv_filename, top_n=2):
 
     plt.figure(figsize=(12, 6))
 
-    # Plotte mit hue="ip_port", um IP+Port als eindeutigen Schlüssel für Farben zu verwenden
-    sns.barplot(x='Port', y='avg_score', hue='ip_port', data=df_top, palette="tab10")
+    # Anstelle von 'Port' wird jetzt 'Protocol' für die x-Achse verwendet
+    sns.barplot(x='Protocol', y='avg_score', hue='ip_port', data=df_top, palette="tab10")
 
     plt.title(f'Proxies by Average Score')
-
+    plt.ylim(0,101)
     # Erstelle Legende mit formatierten Labels
     handles, labels = plt.gca().get_legend_handles_labels()
     unique_labels = dict(zip(labels, handles))
@@ -135,7 +141,6 @@ def plot_top_proxies_by_protocol(csv_filename, top_n=2):
     sorted_handles = [unique_labels[label] for label in sorted_labels]
 
     plt.legend(sorted_handles, sorted_labels, title='Listed by IP:Port', bbox_to_anchor=(1.05, 1), loc='upper left')
-
     plt.tight_layout()
     plt.savefig('Proxies_by_avg_score.png')
     plt.close()
@@ -219,7 +224,7 @@ def plot_avg_throughput(csv_filename):
     plt.xlabel('Epoch')
     plt.ylabel('Average Throughput in [KB/s]')
     plt.title(f'Average Throughput per Epoch of the {proto} - Protokoll')
-
+    plt.ylim(150, 1200)
     plt.xticks(np.arange(1, 11, 1))
 
     # Legende mit IP, Port und Typ
@@ -313,7 +318,7 @@ def plot_avg_transmission_time(csv_filename):
     plt.ylabel('Average Transmission Time in [s]')
     plt.title(f'Average Transmission Time per Epoch of the {proto} - Protokoll')
     plt.xticks(np.arange(1, 11, 1))
-
+    plt.ylim(0,17.5)
     # Legende mit IP, Port und Typ
     handles = [
         plt.Line2D([0], [0], marker='o', color=ip_colors[(ip, port)], 
@@ -360,8 +365,9 @@ def plot_HR_and_RR(csv_filename):
 
     plt.xlabel('Epoch')
     plt.ylabel('Rate Values in [%]')
-    plt.title(f'Handshake Rate (HR) and Request Rate (RR) per Epoch of the {proto} - Protokoll')
+    plt.title(f'Handshake Rate (HR) and Request Rate (RR) per Epoch')
     plt.xticks(np.arange(1, 11, 1))
+    plt.ylim(0,103)
 
     
     handles = []
@@ -395,7 +401,7 @@ def move_plots(run_number):
         'Plot_Handshake_and_Request_Rate.png',
         'avg_score.csv',
         'proxy_data.csv',
-        'output.csv'
+        'output.csv','console-output.txt'
     ]
     #Move
     

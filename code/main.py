@@ -1,6 +1,5 @@
 import asyncio
 import subprocess
-import json
 from proxy_manager import Proxy_Manager
 from proxy_class import Proxy 
 from functions import *

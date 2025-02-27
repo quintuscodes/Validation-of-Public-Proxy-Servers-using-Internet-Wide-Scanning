@@ -11,7 +11,7 @@ class Proxy_Manager:
   """
 
 
-  "Construcotr"
+  "Constructor"
   def __init__(self,_protocol):
     self.protocol = _protocol
     self.master_proxy_list = []
@@ -21,7 +21,7 @@ class Proxy_Manager:
 
 
 
-  "Helper Method to get proxy items from list"
+  
   
   def get_proxy(self, index) -> Proxy:
      proxy = self.proxy_list[index]
@@ -68,7 +68,7 @@ class Proxy_Manager:
     attrs = vars(Proxy)
     print(f"\nAdded to List:\n" + ', \n'.join("%s: %s" % item for item in attrs.items()) + "\n")
   
-  async def print_proxy_list(self, arg): #TODO ADD async keyword AGAIN!!
+  async def print_proxy_list(self, arg): 
     """
     Method to print the actual proxy_list with enhanced ASCII art representation designed by ChatGPT
     """
@@ -115,7 +115,7 @@ class Proxy_Manager:
   async def evaluate_proxy_list(self,counter, evaluation_rounds,proxy_number):
     
     """
-    A Method to initialize the evaluation of the Proxys in Proxy-List
+    A Method to initialize the evaluation of the Proxies in Proxy-List
     
     """
     
@@ -126,7 +126,7 @@ class Proxy_Manager:
       
     
       tasks = []
-      print(f"Test Queue Evaluation Round Nr. {counter}")
+      
       
       
       for i in range(len(self.proxy_list)):
@@ -205,7 +205,7 @@ class Proxy_Manager:
 
 
   async def sort_proxy_lists(self,proxy_number):
-    "A Method to sort the List and remove proxys with a < 100 score threshold"
+    "A Method to sort the List and remove proxys with a < 50 score threshold"
     
     self.proxy_list.sort(key=lambda Proxy: Proxy.score, reverse=True)
     

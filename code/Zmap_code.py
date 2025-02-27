@@ -4,7 +4,7 @@ import asyncio
 
 async def run_zmap_scan(output_file, target_range, ports, rate, probes):
     """
-    Run a ZMAP scan as a subprocess.
+    Run ZMAP scan as a subprocess.
     """
     zmap_command = [
         "sudo", "zmap",
@@ -49,7 +49,7 @@ async def run_zmap_scan(output_file, target_range, ports, rate, probes):
 
 async def parse_zmap_output(output_file, http_ports, socks_ports):
     """
-    Parse the ZMAP output and generate Proxy objects.
+    Parse the ZMAP output
     """
     with open(output_file, "r") as file:
         data = file.readlines()
@@ -83,7 +83,7 @@ async def parse_zmap_output(output_file, http_ports, socks_ports):
 
 async def fetch_proxys_write_to_class(proxy_managers_list:list, output_file, http_ports, socks_ports):
     """
-    Integrate ZMAP output into Proxy_Manager class.
+    Parse ZMAP output and instantiate Proxy objects, integrate into Proxy_Manager class.
     """
     output = await parse_zmap_output(output_file, http_ports, socks_ports)
 

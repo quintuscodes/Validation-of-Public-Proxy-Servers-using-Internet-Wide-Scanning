@@ -1,5 +1,13 @@
 # Validation-of-Public-Proxy-Servers-using-Internet-Wide-Scanning
-The Repository's purpose is an investigation of public proxy servers. Proxy Servers are identified using the open-source internet-wide-scanning tool Zmap. <br> Objects should be evaluated in order to make a statement how proxy servers of the public adress space are available and reliable. <br>
+The Repository's purpose is an investigation of proxy servers. Proxy Servers are identified using the open-source internet-wide-scanning tool Zmap. <br> Objects should be evaluated in order to make a statement how proxy servers are available and reliable. <br>
+
+This software is provided for authorized security testing and educational purposes only.
+Unauthorized access, scanning, or testing of systems without explicit prior consent is illegal and unethical.
+
+By using this tool, you agree to use it only on systems and networks you own or are explicitly authorized to test.
+The authors and contributors of this software are not responsible for any damage, loss, or legal consequences resulting from misuse.
+
+The user is solely responsible for compliance with all applicable laws and regulations in their jurisdiction.
 
 # Class Diagram
 Illustrates the Proxy Manager and Proxy class with Getters & Setters. <br>
